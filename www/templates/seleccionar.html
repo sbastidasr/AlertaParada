@@ -1,0 +1,23 @@
+<ion-view title="seleccionar">
+    <ion-content padding="'true'" class="has-header">
+        <form class="list">
+            <div>
+                <p>Busca tu parada</p>
+            </div>
+            <label class="item item-input">
+                <span class="input-label">Input</span>
+                <input type="text" placeholder="">
+            </label>
+        </form>
+        <div>
+            <p>O selecciona de la lista</p>
+        </div>
+        <ion-list>
+           <ion-item  href="#/mapa" ng-repeat="todo in todos">
+             {{todo.name}}!
+           </ion-item>
+         </ion-list>
+        <div class="spacer" style="height: 100px;"></div>
+      <a href="#/mapa" class="button button-stable button-outline ">Configurar</a>
+    </ion-content>
+</ion-view>

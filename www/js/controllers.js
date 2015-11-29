@@ -14,6 +14,8 @@ angular.module('app.controllers', [])
 })
 
 .controller('mapaCtrl', function($scope) {
+
+
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
@@ -63,6 +65,5 @@ angular.module('app.controllers', [])
     });
 
     $scope.map = map;
+    */
   });
-*/
-})

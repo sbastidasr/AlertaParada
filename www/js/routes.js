@@ -23,7 +23,7 @@ angular.module('app.routes', [])
     })
 
     .state('mapa', {
-      url: '/mapa',
+      url: '/mapa/:id',
       templateUrl: 'templates/mapa.html',
       controller: 'mapaCtrl'
     })

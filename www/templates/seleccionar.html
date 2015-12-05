@@ -13,7 +13,7 @@
             <p>O selecciona de la lista</p>
         </div>
         <ion-list>
-           <ion-item  href="#/mapa" ng-repeat="todo in todos">
+           <ion-item  href="#/mapa/{{$index}}" ng-repeat="todo in todos track by $index">
              {{todo.name}}!
            </ion-item>
          </ion-list>

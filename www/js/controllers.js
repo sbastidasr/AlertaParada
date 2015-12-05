@@ -4,16 +4,15 @@ angular.module('app.controllers', [])
 
 })
 
-.controller('seleccionarCtrl', function($scope) {
-  $scope.todos = [
-    {name:"Carvajal - Edmundo Carvajal"},
-    {name:"Ofelia - Av. Diego de Vasquez"},
-    {name:"Otra Parada - Otra Calle"},
-    {name:"Brasil - Brasil 535"}
-  ];
+.controller('seleccionarCtrl', function($scope, ToDoService) {
+  $scope.todos =ToDoService;
 })
 
-.controller('mapaCtrl', function($scope) {
+.controller('mapaCtrl', function($scope, $ionicLoading, $stateParams, locationService,ToDoService) {
+
+
+  var index = $stateParams.id;
+  var posit = ToDoService[index];
 
 
   $scope.mapCreated = function(map) {
@@ -22,10 +21,11 @@ angular.module('app.controllers', [])
 
   $scope.centerOnMe = function () {
     console.log("Centering");
+
+
     if (!$scope.map) {
       return;
     }
-
     $scope.loading = $ionicLoading.show({
       content: 'Getting current location...',
       showBackdrop: false
@@ -34,12 +34,21 @@ angular.module('app.controllers', [])
     navigator.geolocation.getCurrentPosition(function (pos) {
       console.log('Got pos', pos);
       $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-      $scope.loading.hide();
+      $ionicLoading.hide();
     }, function (error) {
       alert('Unable to get location: ' + error.message);
     });
   };
 
+function setParada(){
+    var parada = new google.maps.Marker({
+      position: new google.maps.LatLng(posit.lat, posit.long),
+      map: $scope.map,
+      title: "Parada",
+    });
+}
+//  setTimeout(function(){ $scope.centerOnMe(); }, 5000);
+  setTimeout(function(){ setParada(); }, 5000);
 //////a/sdasdasdasdasd
   /*
 

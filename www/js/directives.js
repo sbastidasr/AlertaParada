@@ -14,11 +14,25 @@ angular.module('app.directives', [])
     link: function ($scope, $element, $attr) {
       function initialize() {
         var mapOptions = {
-          center: new google.maps.LatLng(43.07493, -89.381388),
+          center: new google.maps.LatLng(-0.1636095, -78.4926503),
           zoom: 16,
           mapTypeId: google.maps.MapTypeId.ROADMAP
         };
         var map = new google.maps.Map($element[0], mapOptions);
+
+        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+        //this bit assigns the location marker
+        navigator.geolocation.getCurrentPosition(function(pos) {
+          map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
+          console.log(pos.coords.latitude+" "+ pos.coords.longitude)
+          var myLocation = new google.maps.Marker({
+            position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
+            map: map,
+            title: "My Location",
+            icon: im
+          });
+        });
+        //up to heres
 
         $scope.onCreate({map: map});
 

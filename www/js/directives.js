@@ -20,18 +20,7 @@ angular.module('app.directives', [])
         };
         var map = new google.maps.Map($element[0], mapOptions);
 
-        var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
-        //this bit assigns the location marker
-        navigator.geolocation.getCurrentPosition(function(pos) {
-          map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-          console.log(pos.coords.latitude+" "+ pos.coords.longitude)
-          var myLocation = new google.maps.Marker({
-            position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-            map: map,
-            title: "My Location",
-            icon: im
-          });
-        });
+
         //up to heres
 
         $scope.onCreate({map: map});

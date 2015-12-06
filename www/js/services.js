@@ -7,8 +7,8 @@ angular.module('app.services', [])
 .service('ToDoService', [function(){
   var todos = [
     {name:"MiCasa - Edmundo Carvajal",
-      lat: -0,
-      long: -79},
+      lat: -0.160173,
+      lng: -78.492892},
       {name:"Ofelia - Av. Diego de Vasquez"},
       {name:"Otra Parada - Otra Calle"},
       {name:"Brasil - Brasil 535"}

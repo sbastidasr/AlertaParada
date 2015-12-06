@@ -10,69 +10,79 @@ angular.module('app.controllers', [])
 
 .controller('mapaCtrl', function($scope, $ionicLoading, $stateParams, locationService,ToDoService) {
 
-
   var index = $stateParams.id;
-  var posit = ToDoService[index];
-
+  var posicionParada = ToDoService[index];
+  var myLocation;
 
   $scope.mapCreated = function(map) {
     $scope.map = map;
   };
 
-  $scope.centerOnMe = function () {
-    console.log("Centering");
-
-
-    if (!$scope.map) {
-      return;
-    }
-    $scope.loading = $ionicLoading.show({
-      content: 'Getting current location...',
-      showBackdrop: false
+  function init(){
+    var im = 'http://www.robotwoods.com/dev/misc/bluecircle.png';
+    myLocation = new google.maps.Marker({
+      position: new google.maps.LatLng(-0.1636095, -78.4926503),
+      map: $scope.map,
+      title: "My Location",
+      icon: im
     });
-
-    navigator.geolocation.getCurrentPosition(function (pos) {
-      console.log('Got pos', pos);
-      $scope.map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-      $ionicLoading.hide();
-    }, function (error) {
-      alert('Unable to get location: ' + error.message);
+  }
+  ctr = function(){
+    navigator.geolocation.getCurrentPosition(function(pos) {
+      var latlng= new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude);
+      $scope.map.setCenter(latlng);
+      var mypos = {
+        lat:pos.coords.latitude,
+        lng:pos.coords.longitude
+      }
+      var distance= getDistance(posicionParada, mypos);
+       $scope.distance=distance;
+        $scope.$apply()
+      myLocation.setPosition( latlng);
     });
-  };
+  }
 
-function setParada(){
+  function setParada(){
     var parada = new google.maps.Marker({
-      position: new google.maps.LatLng(posit.lat, posit.long),
+      position: new google.maps.LatLng(posicionParada.lat, posicionParada.lng),
       map: $scope.map,
       title: "Parada",
     });
-}
-//  setTimeout(function(){ $scope.centerOnMe(); }, 5000);
-  setTimeout(function(){ setParada(); }, 5000);
-//////a/sdasdasdasdasd
-  /*
+  }
 
-  google.maps.event.addDomListener(window, 'load', function() {
+  setTimeout(function(){
+    init();
+    setParada();
+  }, 2000);
 
-    var myLatlng = new google.maps.LatLng(57.3000, -120.4833);
- debugger;
-    var mapOptions = {
-      center: myLatlng,
-      zoom: 16,
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-    };
+  function doWithInterval(){
+    setTimeout(function(){
+      ctr();
+      doWithInterval()
+    }, 5000);
+  }
+  doWithInterval();
 
-    var map = new google.maps.Map(document.getElementById("map"), mapOptions);
 
-    navigator.geolocation.getCurrentPosition(function(pos) {
-      map.setCenter(new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude));
-      var myLocation = new google.maps.Marker({
-        position: new google.maps.LatLng(pos.coords.latitude, pos.coords.longitude),
-        map: map,
-        title: "My Location"
-      });
-    });
 
-    $scope.map = map;
-    */
-  });
+
+
+
+
+  var rad = function(x) {
+    return x * Math.PI / 180;
+  };
+
+  var getDistance = function(p1, p2) {
+    var R = 6378137; // Earth’s mean radius in meter
+    var dLat = rad(p2.lat - p1.lat);
+    var dLong = rad(p2.lng - p1.lng);
+    var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(rad(p1.lat)) * Math.cos(rad(p2.lat)) * Math.sin(dLong / 2) * Math.sin(dLong / 2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    var d = R * c;
+    return d; // returns the distance in meter
+
+  };
+
+});

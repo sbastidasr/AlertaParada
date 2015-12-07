@@ -8,7 +8,7 @@ angular.module('app.controllers', [])
   $scope.todos =ToDoService;
 })
 
-.controller('mapaCtrl', function($scope, $ionicLoading, $stateParams, locationService,ToDoService) {
+.controller('mapaCtrl', function($scope, $ionicLoading, $stateParams,$cordovaDialogs, $cordovaMedia, locationService,ToDoService) {
 
   var index = $stateParams.id;
   var posicionParada = ToDoService[index];
@@ -36,8 +36,8 @@ angular.module('app.controllers', [])
         lng:pos.coords.longitude
       }
       var distance= getDistance(posicionParada, mypos);
-       $scope.distance=distance;
-        $scope.$apply()
+      $scope.distance=distance;
+      $scope.$apply()
       myLocation.setPosition( latlng);
     });
   }
@@ -58,15 +58,30 @@ angular.module('app.controllers', [])
   function doWithInterval(){
     setTimeout(function(){
       ctr();
-      doWithInterval()
+      doWithInterval();
+      alertaParada();
     }, 5000);
   }
   doWithInterval();
 
+  var alerted = false;
 
+  function alertaParada(){
+    if ($scope.distance<400 && alerted===false){
+      $scope.audio = new Audio('alerts/htctouch.mp3');
+      $scope.audio.loop = true;
+      $scope.audio.play();
 
+      setTimeout(function(){
+        $scope.audio.pause();
+      }, 8000);
 
-
+      setTimeout(function(){
+        $cordovaDialogs.alert('Has llegado a tu parada', 'title', 'button name')
+        .then(function() { alerted=true; });
+      }, 1000);
+    }
+  }
 
 
   var rad = function(x) {

@@ -27,6 +27,9 @@ angular.module('app.services', [])
     {name:"12 de Octubre y Colon",
     lat: -0.203682,
     lng: -78.482800},
+    {name:"12 de Octubre y Veintimilla",
+    lat: -0.208284,
+    lng:  -78.490040},
     {name:"12 de Octubre y Roca",
     lat: -0.208938,
     lng: -78.491580}
